@@ -36,11 +36,17 @@ public class Doctor extends User {
     public Doctor(String username, String hashedPassword, String name, String email) {
         super(username, hashedPassword, name, email, "doctor");
 
-        if (doctorId >= Integer.MIN_VALUE && (doctorId + 1) <= Integer.MAX_VALUE &&
-                nextDoctorId >= Integer.MIN_VALUE && (nextDoctorId + 1) <= Integer.MAX_VALUE) {
-
-            this.doctorId = nextDoctorId++;
+        if (nextDoctorId == Integer.MAX_VALUE) {
+            throw new IllegalStateException("Overflow");
         }
+
+        if (nextDoctorId == Integer.MIN_VALUE) {
+            throw new IllegalStateException("Underflow");
+        }
+
+        this.doctorId = nextDoctorId;
+
+        nextDoctorId += 1;
     }
 
     /**

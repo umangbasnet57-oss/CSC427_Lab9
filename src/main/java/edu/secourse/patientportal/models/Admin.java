@@ -33,11 +33,17 @@ public class Admin extends User {
     public Admin(String username, String hashedPassword, String name, String email) {
         super(username, hashedPassword, name, email, "admin");
 
-        if (adminId >= Integer.MIN_VALUE && (adminId + 1) <= Integer.MAX_VALUE &&
-                nextAdminId >= Integer.MIN_VALUE && (nextAdminId + 1) <= Integer.MAX_VALUE) {
-
-            this.adminId = nextAdminId++;
+        if (nextAdminId == Integer.MAX_VALUE) {
+            throw new IllegalStateException("Overflow");
         }
+
+        if (nextAdminId == Integer.MIN_VALUE) {
+            throw new IllegalStateException("Underflow");
+        }
+
+        this.adminId = nextAdminId;
+
+        nextAdminId += 1;
     }
 
     /**
